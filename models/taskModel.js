@@ -15,6 +15,10 @@ const taskSchema = mongoose.Schema(
     due_date: {
       type: String,
     },
+    user_id: {
+      type: String,
+      require: [true, 'User not valid'],
+    },
   },
   {
     timestamps: true,
