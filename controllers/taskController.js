@@ -44,4 +44,21 @@ const getTasks = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { addTask, getTasks };
+const deleteTask = asyncHandler(async (req, res) => {
+  const { id } = req.query;
+
+  if (!id) {
+    res.status(403);
+    throw new Error('Task ID not found');
+  }
+
+  try {
+    const deletedTask = await Task.findOneAndDelete({ _id: id });
+    res.status(200).json({ id: deletedTask._id, message: 'Task deleted succesfully' });
+  } catch (err) {
+    res.status(500);
+    throw new Error('Something went wrong when deleting');
+  }
+});
+
+module.exports = { addTask, getTasks, deleteTask };
