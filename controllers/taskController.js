@@ -45,6 +45,7 @@ const getTasks = asyncHandler(async (req, res) => {
 });
 
 const deleteTask = asyncHandler(async (req, res) => {
+  const { user_id } = req;
   const { id } = req.query;
 
   if (!id) {
@@ -53,7 +54,7 @@ const deleteTask = asyncHandler(async (req, res) => {
   }
 
   try {
-    const deletedTask = await Task.findOneAndDelete({ _id: id });
+    const deletedTask = await Task.findOneAndDelete({ _id: id, user_id });
     res.status(200).json({ id: deletedTask._id, message: 'Task deleted succesfully' });
   } catch (err) {
     res.status(500);
@@ -61,4 +62,24 @@ const deleteTask = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { addTask, getTasks, deleteTask };
+const updateTask = asyncHandler(async (req, res) => {
+  const { user_id } = req;
+  const { id } = req.query;
+  const newData = req.body;
+
+  if (!id) {
+    res.status(403);
+    throw new Error('Task ID not found');
+  }
+
+  try {
+    const updatedTask = await Task.findOneAndUpdate({ _id: id, user_id }, newData);
+    console.log(updatedTask);
+    res.status(200).json({ id: updatedTask._id, message: 'Task updated succesfully' });
+  } catch (err) {
+    res.status(500);
+    throw new Error('Something went wrong when updating');
+  }
+});
+
+module.exports = { addTask, getTasks, deleteTask, updateTask };
