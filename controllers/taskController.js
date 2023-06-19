@@ -28,9 +28,10 @@ const addTask = asyncHandler(async (req, res) => {
 
 const getTasks = asyncHandler(async (req, res) => {
   const { user_id } = req;
+  const filters = req.query;
 
   try {
-    const taskList = await Task.find({ user_id }).sort({ updatedAt: 'desc' });
+    const taskList = await Task.find({ user_id, ...filters }).sort({ updatedAt: 'desc' });
 
     if (!taskList) {
       res.status(404);
