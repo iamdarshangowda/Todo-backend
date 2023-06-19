@@ -28,10 +28,37 @@ const addTask = asyncHandler(async (req, res) => {
 
 const getTasks = asyncHandler(async (req, res) => {
   const { user_id } = req;
-  const filters = req.query;
+  const queryData = req.query;
+
+  let filters = {};
+  const today = new Date();
+
+  switch (queryData?.date) {
+    case 'upcoming':
+      filters.due_date = {
+        $gt: new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1),
+      };
+      break;
+
+    case 'today':
+      const startOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+      const endOfDay = new Date(
+        today.getFullYear(),
+        today.getMonth(),
+        today.getDate() + 1
+      );
+      filters.due_date = { $gte: startOfDay, $lt: endOfDay };
+      break;
+
+    default:
+      filters = queryData;
+      break;
+  }
 
   try {
-    const taskList = await Task.find({ user_id, ...filters }).sort({ updatedAt: 'desc' });
+    const taskList = await Task.find({ user_id, ...filters }).sort({
+      updatedAt: 'desc',
+    });
 
     if (!taskList) {
       res.status(404);

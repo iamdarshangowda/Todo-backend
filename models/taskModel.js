@@ -13,7 +13,7 @@ const taskSchema = mongoose.Schema(
       type: String,
     },
     due_date: {
-      type: String,
+      type: Date,
     },
     user_id: {
       type: String,
