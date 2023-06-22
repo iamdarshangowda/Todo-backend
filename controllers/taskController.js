@@ -113,9 +113,9 @@ const updateTask = asyncHandler(async (req, res) => {
 // Count Tasks based on 'today', 'upcoming, 'personal' and 'work'
 const countTasks = asyncHandler(async (req, res) => {
   const { user_id } = req;
-  const today = new Date();
-  const startOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-  const endOfDay = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1);
+  const date = new Date();
+  const startOfDay = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  const endOfDay = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1);
 
   try {
     const results = await Promise.allSettled([
