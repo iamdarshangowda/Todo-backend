@@ -134,9 +134,9 @@ const countTasks = asyncHandler(async (req, res) => {
       }
     });
 
-    const [todayCount, upcommingCount, personalCount, workCount] = counts;
+    const [today, upcoming, personal, work] = counts;
 
-    res.status(200).json({ todayCount, upcommingCount, personalCount, workCount });
+    res.status(200).json({ today, upcoming, personal, work });
   } catch (err) {
     res.status(500);
     throw new Error('Something went wrong when counting tasks');
