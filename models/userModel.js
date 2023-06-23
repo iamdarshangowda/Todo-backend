@@ -14,6 +14,9 @@ const userSchema = mongoose.Schema(
       type: String,
       required: [true, 'Please add password'],
     },
+    lists: {
+      type: Array,
+    },
   },
   {
     timestamps: true,

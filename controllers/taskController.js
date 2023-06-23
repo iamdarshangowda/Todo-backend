@@ -1,6 +1,6 @@
 const asyncHandler = require('express-async-handler');
 const Task = require('../models/taskModel');
-
+const User = require('../models/userModel');
 // Add new Task
 const addTask = asyncHandler(async (req, res) => {
   const { title, description, list_type, due_date } = req.body;
@@ -118,12 +118,29 @@ const countTasks = asyncHandler(async (req, res) => {
   const endOfDay = new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1);
 
   try {
-    const results = await Promise.allSettled([
-      Task.count({ user_id, due_date: { $gte: startOfDay, $lt: endOfDay } }),
-      Task.count({ user_id, due_date: { $gte: endOfDay } }),
-      Task.count({ user_id, list_type: 'personal' }),
-      Task.count({ user_id, list_type: 'work' }),
-    ]);
+    const userResult = await User.findOne({ _id: user_id }, 'lists');
+
+    let toQuery = [
+      { title: 'today', queryValue: { due_date: { $gte: startOfDay, $lt: endOfDay } } },
+      { title: 'upcoming', queryValue: { due_date: { $gte: endOfDay } } },
+      { title: 'personal', queryValue: { list_type: 'personal' } },
+      { title: 'work', queryValue: { list_type: 'work' } },
+    ];
+
+    if (userResult.lists.length >= 1) {
+      userResult.lists.forEach((data) =>
+        toQuery.push({
+          title: data.list.toLowerCase(),
+          queryValue: {
+            list_type: data.list.toLowerCase(),
+          },
+        })
+      );
+    }
+
+    const results = await Promise.allSettled(
+      toQuery.map((query) => Task.count({ user_id, ...query.queryValue }))
+    );
 
     const counts = results.map((result) => {
       if (result.status === 'fulfilled') {
@@ -134,9 +151,12 @@ const countTasks = asyncHandler(async (req, res) => {
       }
     });
 
-    const [today, upcoming, personal, work] = counts;
+    const allCounts = toQuery.map((data, index) => ({
+      title: data.title,
+      count: counts[index],
+    }));
 
-    res.status(200).json({ today, upcoming, personal, work });
+    res.status(200).json({ allCounts });
   } catch (err) {
     res.status(500);
     throw new Error('Something went wrong when counting tasks');

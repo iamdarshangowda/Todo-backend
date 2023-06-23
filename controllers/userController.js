@@ -40,11 +40,14 @@ const userSignup = asyncHandler(async (req, res) => {
           id: user.id,
         },
       },
-      process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: '50m' }
+      process.env.ACCESS_TOKEN_SECRET
+      // { expiresIn: '50m' }
     );
 
-    res.status(201).json({ _id: user.id, email: user.email, accessToekn });
+    res.status(201).json({
+      user: { _id: user.id, email: user.email, username: user.username },
+      accessToekn,
+    });
   } else {
     res.status(400);
     throw new Error('User data not valid');
@@ -77,7 +80,13 @@ const userLogin = asyncHandler(async (req, res) => {
       // { expiresIn: '50m' }
     );
 
-    res.status(200).json({ accessToekn, user, message: 'Logged in successfully' });
+    res
+      .status(200)
+      .json({
+        accessToekn,
+        user: { _id: user.id, email: user.email, username: user.username },
+        message: 'Logged in successfully',
+      });
   } else {
     res.status(404);
     throw new Error('Email or Password is not valid');
