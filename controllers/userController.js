@@ -80,17 +80,28 @@ const userLogin = asyncHandler(async (req, res) => {
       // { expiresIn: '50m' }
     );
 
-    res
-      .status(200)
-      .json({
-        accessToekn,
-        user: { _id: user.id, email: user.email, username: user.username },
-        message: 'Logged in successfully',
-      });
+    res.status(200).json({
+      accessToekn,
+      user: { _id: user.id, email: user.email, username: user.username },
+      message: 'Logged in successfully',
+    });
   } else {
     res.status(404);
     throw new Error('Email or Password is not valid');
   }
 });
 
-module.exports = { userSignup, userLogin };
+const userRedirect = asyncHandler(async (req, res) => {
+  const { user_id } = req;
+  if (user_id) {
+    res.status(200).json({
+      tokenValid: true,
+    });
+  } else {
+    res.status(403).json({
+      tokenValid: false,
+    });
+  }
+});
+
+module.exports = { userSignup, userLogin, userRedirect };

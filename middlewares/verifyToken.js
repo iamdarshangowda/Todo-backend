@@ -9,7 +9,9 @@ function verifyToken(req, res, next) {
 
     jwt.verify(bearerToken, process.env.ACCESS_TOKEN_SECRET, (error, authData) => {
       if (error) {
-        res.status(403);
+        res.status(403).json({
+          tokenValid: false,
+        });
         throw new Error('Token not valid');
       } else {
         req.user_id = authData.user.id;
