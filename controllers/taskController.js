@@ -1,6 +1,7 @@
 const asyncHandler = require('express-async-handler');
 const Task = require('../models/taskModel');
 const User = require('../models/userModel');
+
 // Add new Task
 const addTask = asyncHandler(async (req, res) => {
   const { title, description, list_type, due_date } = req.body;
@@ -11,7 +12,7 @@ const addTask = asyncHandler(async (req, res) => {
     throw new Error('Please add title');
   }
 
-  const task = Task.create({
+  const task = await Task.create({
     title,
     description,
     list_type,
@@ -102,8 +103,7 @@ const updateTask = asyncHandler(async (req, res) => {
 
   try {
     const updatedTask = await Task.findOneAndUpdate({ _id: id, user_id }, newData);
-    console.log(updatedTask);
-    res.status(200).json({ id: updatedTask._id, message: 'Task updated succesfully' });
+    res.status(201).json({ id: updatedTask._id, message: 'Task updated succesfully' });
   } catch (err) {
     res.status(500);
     throw new Error('Something went wrong when updating');

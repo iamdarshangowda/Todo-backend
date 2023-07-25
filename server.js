@@ -13,6 +13,7 @@ app.use(express.json());
 app.use('/user', require('./routes/userRoutes'));
 app.use('/', require('./routes/tasksRouter'));
 app.use('/', require('./routes/listsRouter'));
+app.use('/', require('./routes/stickyRouter'));
 app.use(errorHandler);
 
 app.listen(PORT, () => {
