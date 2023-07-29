@@ -1,6 +1,7 @@
 const asyncHandler = require('express-async-handler');
 const Task = require('../models/taskModel');
 const User = require('../models/userModel');
+const Sticky = require('../models/stickyModel');
 
 // Add new Task
 const addTask = asyncHandler(async (req, res) => {
@@ -142,6 +143,8 @@ const countTasks = asyncHandler(async (req, res) => {
       toQuery.map((query) => Task.count({ user_id, ...query.queryValue }))
     );
 
+    const stickyCount = await Sticky.count({ user_id });
+
     const counts = results.map((result) => {
       if (result.status === 'fulfilled') {
         return result.value;
@@ -155,6 +158,8 @@ const countTasks = asyncHandler(async (req, res) => {
       title: data.title,
       count: counts[index],
     }));
+
+    allCounts.push({ title: 'sticky', count: stickyCount });
 
     res.status(200).json({ allCounts });
   } catch (err) {
