@@ -16,6 +16,4 @@ router.delete('/sticky', verifyToken, deleteSticky);
 
 router.put('/sticky', verifyToken, updateSticky);
 
-// router.get('/stickyCount', verifyToken, countTasks);
-
 module.exports = router;

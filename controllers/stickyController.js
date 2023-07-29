@@ -25,7 +25,7 @@ const addSticky = asyncHandler(async (req, res) => {
   }
 });
 
-// Add new Sticky
+// Get all Sticky
 const getStickies = asyncHandler(async (req, res) => {
   const { user_id } = req;
 

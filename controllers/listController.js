@@ -21,7 +21,13 @@ const addList = asyncHandler(async (req, res) => {
       throw new Error('No matching document found');
     }
 
-    res.status(200).json({ oldList: result.lists, newlyAdded: newList });
+    res
+      .status(200)
+      .json({
+        oldList: result.lists,
+        newlyAdded: newList,
+        message: 'List created Successfully',
+      });
   } catch (err) {
     res.status(400);
     throw new Error('User data not valid');
