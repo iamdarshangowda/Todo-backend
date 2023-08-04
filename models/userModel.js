@@ -17,6 +17,9 @@ const userSchema = mongoose.Schema(
     lists: {
       type: Array,
     },
+    googleId: {
+      type: String,
+    },
   },
   {
     timestamps: true,
