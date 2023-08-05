@@ -3,7 +3,7 @@ const jwt = require('jsonwebtoken');
 function verifyToken(req, res, next) {
   const bearerHeader = req.headers['authorization'];
 
-  if (typeof bearerHeader !== undefined) {
+  if (bearerHeader) {
     const bearer = bearerHeader.split(' ');
     const bearerToken = bearer[1];
 
@@ -18,6 +18,9 @@ function verifyToken(req, res, next) {
         next();
       }
     });
+  } else if (req.session) {
+    req.user_id = req.session.passport.user;
+    next();
   } else {
     res.status(403);
     throw new Error('User not authorised');

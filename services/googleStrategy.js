@@ -7,11 +7,9 @@ const googleLogin = new GoogleStrategy(
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     callbackURL: '/auth/google/callback',
-    proxy: true,
-    scope: ['profile', 'email'],
   },
   async function (accessToken, refreshToken, profile, done) {
-    const email = profile.emails[0].value;
+    const { email, name, sub } = profile._json;
 
     // Check if user exists
     try {
@@ -26,10 +24,10 @@ const googleLogin = new GoogleStrategy(
 
     try {
       const newUser = await User.create({
-        username: profile.displayName,
+        username: name,
         email,
         password: 'google-login',
-        googleId: profile.id,
+        googleId: sub,
       });
 
       done(null, newUser);
@@ -40,3 +38,16 @@ const googleLogin = new GoogleStrategy(
 );
 
 passport.use(googleLogin);
+
+passport.serializeUser((user, done) => {
+  return done(null, user._id);
+});
+
+passport.deserializeUser(async (id, done) => {
+  try {
+    const doc = await User.findOne({ _id: id });
+    return done(null, doc);
+  } catch (err) {
+    console.log(err);
+  }
+});

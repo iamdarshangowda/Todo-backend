@@ -22,23 +22,35 @@ router.get(
   passport.authenticate('google', {
     //successRedirect: process.env.CLIENT_URL_HOME,
     failureRedirect: '/failure',
-    session: false,
+    session: true,
   }),
   (req, res) => {
-    const { username, email, _id } = req.user;
-    const accessToken = jwt.sign(
-      {
-        user: {
-          username,
-          email,
-          id: _id,
-        },
-      },
-      process.env.ACCESS_TOKEN_SECRET
-    );
+    // const { username, email, _id } = req.user;
+    // const accessToken = jwt.sign(
+    //   {
+    //     user: {
+    //       username,
+    //       email,
+    //       id: _id,
+    //     },
+    //   },
+    //   process.env.ACCESS_TOKEN_SECRET
+    // );
 
-    res.redirect(`${process.env.CLIENT_URL_HOME}?accessToken=${accessToken}`);
+    //res.redirect(`${process.env.CLIENT_URL_HOME}?accessToken=${accessToken}`);
+    res.redirect(`${process.env.CLIENT_URL_HOME}`);
   }
 );
+
+router.get('/getUser', (req, res) => {
+  res.send(req.user);
+});
+
+router.get('/logout', (req, res) => {
+  if (req.user) {
+    req.logout();
+    res.send('done');
+  }
+});
 
 module.exports = router;
