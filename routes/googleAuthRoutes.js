@@ -6,6 +6,7 @@ router.get(
   '/google',
   passport.authenticate('google', {
     scope: ['profile', 'email'],
+    session: true,
   })
 );
 
@@ -23,7 +24,7 @@ router.get(
     session: true,
   }),
   (req, res) => {
-    res.redirect(`${process.env.CLIENT_URL_HOME}`);
+    res.redirect(process.env.CLIENT_URL_HOME);
   }
 );
 
