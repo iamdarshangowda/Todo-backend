@@ -23,7 +23,10 @@ app.use(
     resave: false,
     saveUninitialized: true,
     store: sessionStore,
-    cookie: { maxAge: 1000 * 60 * 60 * 24, domain: 'vercel.app' }, // 1days
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 24,
+      domain: 'todo-app-fullstack-git-module-oauth-iamdarshangowda.vercel.app',
+    }, // 1days
   })
 );
 
