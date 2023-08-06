@@ -20,10 +20,10 @@ app.use(express.json());
 app.use(
   session({
     secret: 'secretcode',
-    resave: true,
+    resave: false,
     saveUninitialized: true,
     store: sessionStore,
-    cookie: { maxAge: 1000 * 60 * 60 * 24 }, // 1day
+    cookie: { maxAge: 1000 * 60 * 60 * 24 }, // 1days
   })
 );
 
