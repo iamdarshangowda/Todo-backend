@@ -25,7 +25,7 @@ app.use(
     store: sessionStore,
     cookie: {
       maxAge: 1000 * 60 * 60 * 24,
-      domain: '.vercel.app',
+      // domain: '.vercel.app',
     }, // 1days
   })
 );

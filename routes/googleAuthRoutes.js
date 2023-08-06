@@ -24,6 +24,13 @@ router.get(
     session: true,
   }),
   (req, res) => {
+    const hostname = req.headers.referer;
+    const cookieValue = req.cookies['connect.sid'];
+    res.cookie('connect.sid', cookieValue, {
+      domain: hostname,
+      httpOnly: true,
+      secure: true,
+    });
     res.redirect(process.env.CLIENT_URL_HOME);
   }
 );
