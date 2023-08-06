@@ -28,7 +28,7 @@ router.get(
 );
 
 router.get('/getUser', (req, res) => {
-  res.send(req.user);
+  res.status(200).json(req.user);
 });
 
 router.get('/logout', (req, res, next) => {
