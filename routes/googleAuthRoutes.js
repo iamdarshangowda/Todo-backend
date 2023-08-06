@@ -26,7 +26,7 @@ router.get(
   (req, res) => {
     const cookieValue = req.cookies['connect.sid'];
     res.cookie('connect.sid', cookieValue, {
-      domain: process.env.CLIENT_URL_HOME,
+      domain: `todo-app-fullstack-git-module-oauth-iamdarshangowda.vercel.app`,
       httpOnly: true,
       secure: true,
     });
