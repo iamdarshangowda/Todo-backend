@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
-const jwt = require('jsonwebtoken');
 
 router.get(
   '/google',
@@ -20,24 +19,10 @@ router.get('/failure', (req, res) => {
 router.get(
   '/google/callback',
   passport.authenticate('google', {
-    //successRedirect: process.env.CLIENT_URL_HOME,
     failureRedirect: '/failure',
     session: true,
   }),
   (req, res) => {
-    // const { username, email, _id } = req.user;
-    // const accessToken = jwt.sign(
-    //   {
-    //     user: {
-    //       username,
-    //       email,
-    //       id: _id,
-    //     },
-    //   },
-    //   process.env.ACCESS_TOKEN_SECRET
-    // );
-
-    //res.redirect(`${process.env.CLIENT_URL_HOME}?accessToken=${accessToken}`);
     res.redirect(`${process.env.CLIENT_URL_HOME}`);
   }
 );
@@ -46,11 +31,19 @@ router.get('/getUser', (req, res) => {
   res.send(req.user);
 });
 
-router.get('/logout', (req, res) => {
-  if (req.user) {
-    req.logout();
-    res.send('done');
-  }
+router.get('/logout', (req, res, next) => {
+  req.logout(function (err) {
+    if (err) {
+      return next(err);
+    }
+    req.session.destroy();
+    res
+      .status(200)
+      .clearCookie('connect.sid', {
+        path: '/',
+      })
+      .json({ message: 'Looged out Successfully' });
+  });
 });
 
 module.exports = router;

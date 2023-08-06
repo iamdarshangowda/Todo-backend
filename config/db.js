@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const MongoStore = require('connect-mongo');
 
 const connectDB = async () => {
   try {
@@ -10,4 +11,9 @@ const connectDB = async () => {
   }
 };
 
-module.exports = connectDB;
+const sessionStore = new MongoStore({
+  mongoUrl: process.env.MONGO_URL,
+  collectionName: 'session',
+});
+
+module.exports = { connectDB, sessionStore };
