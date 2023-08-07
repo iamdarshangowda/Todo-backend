@@ -28,6 +28,7 @@ app.use(
       httpOnly: false,
       sameSite: 'none',
       secure: true,
+      domain: '.vercel.app',
     },
   })
 );

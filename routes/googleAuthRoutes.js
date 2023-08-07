@@ -29,6 +29,7 @@ router.get(
       sameSite: 'none',
       httpOnly: false,
       secure: true,
+      domain: '.vercel.app',
     });
     res.redirect(process.env.CLIENT_URL_HOME);
   }
