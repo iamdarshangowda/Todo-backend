@@ -24,9 +24,10 @@ app.use(
     saveUninitialized: true,
     store: sessionStore,
     cookie: {
-      maxAge: 1000 * 60 * 60 * 24,
-      // domain: '.vercel.app',
-    }, // 1days
+      maxAge: 1000 * 60 * 60 * 24, // 1days
+      httpOnly: false,
+      sameSite: 'lax',
+    },
   })
 );
 

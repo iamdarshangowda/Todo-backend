@@ -24,12 +24,13 @@ router.get(
     session: true,
   }),
   (req, res) => {
-    const cookieValue = req.cookies['connect.sid'];
-    res.cookie('connect.sid', cookieValue, {
-      domain: `todo-app-fullstack-git-module-oauth-iamdarshangowda.vercel.app`,
-      httpOnly: true,
-      secure: true,
-    });
+    // const cookieValue = req.cookies['connect.sid'];
+    // res.cookie('connect.sid', cookieValue, {
+    //   domain: `.vercel.app`,
+    //   httpOnly: true,
+
+    //   secure: true,
+    // });
     res.redirect(process.env.CLIENT_URL_HOME);
   }
 );
