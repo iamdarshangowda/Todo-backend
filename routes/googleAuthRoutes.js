@@ -28,6 +28,7 @@ router.get(
     res.cookie('connect.sid', cookieValue, {
       sameSite: 'none',
       httpOnly: false,
+      secure: true,
     });
     res.redirect(process.env.CLIENT_URL_HOME);
   }
