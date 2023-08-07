@@ -24,13 +24,6 @@ router.get(
     session: true,
   }),
   (req, res) => {
-    const cookieValue = req.cookies['connect.sid'];
-    res.cookie('connect.sid', cookieValue, {
-      sameSite: 'none',
-      httpOnly: false,
-      secure: true,
-      domain: '.vercel.app',
-    });
     res.redirect(process.env.CLIENT_URL_HOME);
   }
 );
