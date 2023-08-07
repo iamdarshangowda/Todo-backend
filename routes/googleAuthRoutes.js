@@ -24,13 +24,11 @@ router.get(
     session: true,
   }),
   (req, res) => {
-    // const cookieValue = req.cookies['connect.sid'];
-    // res.cookie('connect.sid', cookieValue, {
-    //   domain: `.vercel.app`,
-    //   httpOnly: true,
-
-    //   secure: true,
-    // });
+    const cookieValue = req.cookies['connect.sid'];
+    res.cookie('connect.sid', cookieValue, {
+      sameSite: 'none',
+      httpOnly: false,
+    });
     res.redirect(process.env.CLIENT_URL_HOME);
   }
 );
