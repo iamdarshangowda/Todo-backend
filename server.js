@@ -16,7 +16,7 @@ const PORT = process.env.PORT || 5000;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
-  '/api',
+  '/auth',
   createProxyMiddleware({ target: process.env.CORS_ORIGIN_PATH, changeOrigin: true })
 );
 app.use(cookieParser());
