@@ -9,16 +9,11 @@ const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const bodyParser = require('body-parser');
 const strategy = require('./services/googleStrategy');
-const { createProxyMiddleware } = require('http-proxy-middleware');
 
 connectDB();
 const PORT = process.env.PORT || 5000;
 
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(
-  '/auth',
-  createProxyMiddleware({ target: process.env.CORS_ORIGIN_PATH, changeOrigin: true })
-);
 app.use(cookieParser());
 app.use('*', cors({ origin: true, credentials: true }));
 app.use(express.json());
@@ -29,6 +24,10 @@ app.use(
     saveUninitialized: true,
     store: sessionStore,
     cookie: {
+      secure: true,
+      sameSite: 'lax',
+      httpOnly: false,
+      domain: '/',
       maxAge: 1000 * 60 * 60 * 24, // 1days
     },
   })
