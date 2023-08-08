@@ -15,7 +15,7 @@ const PORT = process.env.PORT || 5000;
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use('*', cors({ origin: true, credentials: true }));
+app.use(cors({ origin: process.env.CORS_ORIGIN_PATH, credentials: true }));
 app.use(express.json());
 app.use(
   session({
@@ -24,10 +24,10 @@ app.use(
     saveUninitialized: true,
     store: sessionStore,
     cookie: {
-      secure: true,
+      secure: false,
       sameSite: 'lax',
       httpOnly: false,
-      domain: '/',
+      domain: '.vercel.app',
       maxAge: 1000 * 60 * 60 * 24, // 1days
     },
   })
