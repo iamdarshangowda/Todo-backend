@@ -4,34 +4,15 @@ const app = express();
 const { connectDB, sessionStore } = require('./config/db');
 const errorHandler = require('./middlewares/errorMiddleware');
 const cors = require('cors');
-const passport = require('passport');
-const session = require('express-session');
-const cookieParser = require('cookie-parser');
-const bodyParser = require('body-parser');
 const strategy = require('./services/googleStrategy');
 
 connectDB();
 const PORT = process.env.PORT || 5000;
 
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cookieParser());
-//app.set('trust proxy', 1);
-app.use(cors({ origin: process.env.CORS_ORIGIN_PATH, credentials: true }));
+app.use(cors());
 app.use(express.json());
-app.use(
-  session({
-    secret: 'secretcode',
-    resave: false,
-    saveUninitialized: true,
-    store: sessionStore,
-    cookie: {
-      maxAge: 1000 * 60 * 60 * 24, // 1days
-    },
-  })
-);
 
 app.use(passport.initialize());
-app.use(passport.session());
 
 app.use('/auth', require('./routes/googleAuthRoutes'));
 app.use('/user', require('./routes/userRoutes'));

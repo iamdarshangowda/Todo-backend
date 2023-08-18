@@ -24,6 +24,17 @@ router.get(
     session: true,
   }),
   (req, res) => {
+    const accessToekn = jwt.sign(
+      {
+        user: {
+          username: user.username,
+          email: user.email,
+          id: user.id,
+        },
+      },
+      process.env.ACCESS_TOKEN_SECRET
+      // { expiresIn: '50m' }
+    );
     res.redirect(process.env.CLIENT_URL_HOME);
   }
 );
