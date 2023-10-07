@@ -14,6 +14,15 @@ function verifyToken(req, res, next) {
         });
         throw new Error('Token not valid');
       } else {
+        // Verify Token on Login
+        if (req.url.includes('verify')) {
+          res.status(200).json({
+            tokenValid: true,
+          });
+          return;
+        }
+
+        // All other requests
         req.user_id = authData.user.id;
         next();
       }

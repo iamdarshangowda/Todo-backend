@@ -91,17 +91,4 @@ const userLogin = asyncHandler(async (req, res) => {
   }
 });
 
-const userRedirect = asyncHandler(async (req, res) => {
-  const { user_id } = req;
-  if (user_id) {
-    res.status(200).json({
-      tokenValid: true,
-    });
-  } else {
-    res.status(403).json({
-      tokenValid: false,
-    });
-  }
-});
-
-module.exports = { userSignup, userLogin, userRedirect };
+module.exports = { userSignup, userLogin };
